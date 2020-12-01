@@ -1,26 +1,24 @@
 public class Question {
 
     private int numberOfSubject;
-    private MyLinkedList<String> subjectsOfQuestion;
+    private MyLinkedList<Integer> indexOfSubjects;
     private int depth;
-    private MyLinkedList<String> printedPersons;
 
 
-    public Question(int numberOfSubject, MyLinkedList<String> subjectsOfQuestion, int depth) {
+    private MyMatrix zero;
+    private MyMatrix first;
+    private MyMatrix two;
+    private MyMatrix three;
+    MyLinkedList<OutPut> outPuts = new MyLinkedList<>();
+    MyLinkedList<String> allPeoples;
+
+    public Question(int numberOfSubject, MyLinkedList<Integer> indexOfSubjects, int depth, MyLinkedList<String> allPeoples) {
         this.numberOfSubject = numberOfSubject;
-        this.subjectsOfQuestion = subjectsOfQuestion;
+        this.indexOfSubjects = indexOfSubjects;
         this.depth = depth;
-        printedPersons=new MyLinkedList<>();
+        this.allPeoples = allPeoples;
     }
 
-
-    public MyLinkedList<String> getPrintedPersons() {
-        return printedPersons;
-    }
-
-    public void setPrintedPersons(MyLinkedList<String> printedPersons) {
-        this.printedPersons = printedPersons;
-    }
 
     public int getNumberOfSubject() {
         return numberOfSubject;
@@ -30,12 +28,12 @@ public class Question {
         this.numberOfSubject = numberOfSubject;
     }
 
-    public MyLinkedList<String> getSubjectsOfQuestion() {
-        return subjectsOfQuestion;
+    public MyLinkedList<Integer> getIndexOfSubjects() {
+        return indexOfSubjects;
     }
 
-    public void setSubjectsOfQuestion(MyLinkedList<String> subjectsOfQuestion) {
-        this.subjectsOfQuestion = subjectsOfQuestion;
+    public void setIndexOfSubjects(MyLinkedList<Integer> indexOfSubjects) {
+        this.indexOfSubjects = indexOfSubjects;
     }
 
     public int getDepth() {
@@ -47,19 +45,107 @@ public class Question {
     }
 
 
-    public void response(MyMatrix friendShipMatrix, MyMatrix interestMatrix,int depth) {
+    public void zeroDepth(SocialNetwork socialNetwork) {
+        zero = MyMatrix.calculateQuestionMatrix(socialNetwork.getInterestMatrix(), indexOfSubjects);
+        for (int i = 0; i < zero.getRows().getSize(); i++) { //todo need {nul} row
+            double value = zero.getRows().getElement(i).sumOfElements();
+            if (value != 0) {
+                OutPut outPut = new OutPut(allPeoples.getElement(zero.getRows().getElement(i).getRowNumber()), value, 0);
+                outPuts.addElement(outPut);
+            }
+        }
+    }
 
-            MyMatrix oneDepthMatrix;
-            MyMatrix twoDepthMatrix;
-            MyMatrix threeDepthMatrix;
+
+    public void oneDepth(SocialNetwork socialNetwork) {
+        zeroDepth(socialNetwork);
+        first = MyMatrix.multiplyMatrix(socialNetwork.getFriendShipMatrix(), zero);
+        first = MyMatrix.calculateQuestionMatrix(first, indexOfSubjects);
+        for (int i = 0; i < first.getRows().getSize(); i++) {
+            double value = first.getRows().getElement(i).sumOfElements();
+            if (value != 0) {
+                boolean duplicated = false;
+                for (int j = 0; j < outPuts.getSize(); j++) {
+                    if (outPuts.getElement(j).getName().
+                            equals(allPeoples.getElement(first.getRows().getElement(i).getRowNumber()))) {
+                        duplicated = true;
+                    }
+                }
+                if (!duplicated) {
+                    OutPut outPut = new OutPut(allPeoples.getElement(first.getRows().getElement(i).getRowNumber()), value, 1);
+                    outPuts.addElement(outPut);
+                }
+            }
+        }
+    }
 
 
+    public void twoDepth(SocialNetwork socialNetwork) {
+        oneDepth(socialNetwork);
+        two = MyMatrix.multiplyMatrix(socialNetwork.getFriendShipMatrix(), first);
+        two = MyMatrix.calculateQuestionMatrix(two, indexOfSubjects);
+        for (int i = 0; i < two.getRows().getSize(); i++) {
+            double value = two.getRows().getElement(i).sumOfElements();
+            if (value != 0) {
+                boolean duplicated = false;
+                for (int j = 0; j < outPuts.getSize(); j++) {
+                    if (outPuts.getElement(j).getName().
+                            equals(allPeoples.getElement(two.getRows().getElement(i).getRowNumber()))) {
+                        duplicated = true;
+                    }
+                }
+                if (!duplicated) {
+                    OutPut outPut = new OutPut(allPeoples.getElement(two.getRows().getElement(i).getRowNumber()), value, 2);
+                    outPuts.addElement(outPut);
+                }
 
+            }
+        }
+
+    }
+
+    public void threeDepth(SocialNetwork socialNetwork) {
+        twoDepth(socialNetwork);
+        three = MyMatrix.multiplyMatrix(socialNetwork.getFriendShipMatrix(), two);
+        three = MyMatrix.calculateQuestionMatrix(three, indexOfSubjects);
+        for (int i = 0; i < three.getRows().getSize(); i++) {
+            double value = three.getRows().getElement(i).sumOfElements();
+            if (value != 0) {
+                boolean duplicated = false;
+                for (int j = 0; j < outPuts.getSize(); j++) {
+                    if (outPuts.getElement(j).getName().
+                            equals(allPeoples.getElement(three.getRows().getElement(i).getRowNumber()))) {
+                        duplicated = true;
+                    }
+                }
+                if (!duplicated) {
+                    OutPut outPut = new OutPut(allPeoples.getElement(three.getRows().getElement(i).getRowNumber()), value, 3);
+                    outPuts.addElement(outPut);
+                }
+            }
+        }
 
 
     }
 
 
+    public void response(SocialNetwork socialNetwork, int depth) {
+        if (depth == 0) {
+            zeroDepth(socialNetwork);
+        } else if (depth == 1) {
+            oneDepth(socialNetwork);
+        } else if (depth == 2) {
+            twoDepth(socialNetwork);
+        } else if (depth == 3) {
+            threeDepth(socialNetwork);
+        }
+
+       MyLinkedList.sort(outPuts);
+        for (int i = 0; i < outPuts.getSize(); i++) {
+            outPuts.getElement(i).print();
+        }
+
+    }
 
 
 }

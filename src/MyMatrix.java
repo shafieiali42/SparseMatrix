@@ -19,8 +19,9 @@ public class MyMatrix {
         for (int i = 0; i < copy.getRows().getSize(); i++) {
             boolean isAxis = true;
             for (int k = 0; k < indexes.getSize(); k++) {
-                if (copy.getRows().getElement(i).getColumns().getElement(k).getValue() == 0) {
+                if (copy.getTheRowNodeOfTheIndexRow(i).getTheColumnNodeOfTheIndexColumn(indexes.getElement(k)).getValue() == 0) {
                     isAxis = false;
+                    break;
                 }
             }
             if (!isAxis) {
@@ -28,13 +29,11 @@ public class MyMatrix {
                 copy.getRows().setElement(new RowNode(i, columns), i);
             }
             if (isAxis) {
-                for (int j = 0; j < copy.getRows().getElement(i).getColumns().getSize(); j++) {
+                for (int j = 0; j < copy.getNumberOfColumns(); j++) {
                     if (!indexes.contains(j)) {
-                        try {
-                            copy.getRows().getElement(i).getColumns().delete(j);
-                        } catch (OutOfBoundException e) {
-                            e.printStackTrace();
-                        }
+                            if (copy.getTheRowNodeOfTheIndexRow(i).existedIndexOfColumn(j)){
+                                copy.getTheRowNodeOfTheIndexRow(i).getTheColumnNodeOfTheIndexColumn(j).setValue(0);
+                            }
                     }
                 }
             }
@@ -44,14 +43,43 @@ public class MyMatrix {
 
 
     public static MyMatrix multiplyMatrix(MyMatrix first, MyMatrix second) {
+        if (first.numberOfColumns != second.numberOfRows) {
+            System.err.println("Cant multiply");
+            return null;
+        }
         MyLinkedList<RowNode> rows = new MyLinkedList<>();
-        for (int i = 0; i < first.getRows().getSize(); i++) {
+        for (int i = 0; i < first.numberOfRows; i++) {
+            RowNode rowNode = null;
+            if (first.existedRowIndex(i)) {
+                for (int j = 0; j < second.getNumberOfRows(); j++) {
+                    if (second.existedRowIndex(j)) {
+                        if (first.getTheRowNodeOfTheIndexRow(i).existedIndexOfColumn(j)) {
+                            if (rowNode == null) {
+                                rowNode = RowNode.multiplyNumberToRow(
+                                        first.getTheRowNodeOfTheIndexRow(i).getTheColumnNodeOfTheIndexColumn(j).getValue(),
+                                        second.getTheRowNodeOfTheIndexRow(j),second.numberOfColumns);
+                            } else {
+                                rowNode = RowNode.addTwoRowNode(rowNode, RowNode.multiplyNumberToRow(
+                                        first.getTheRowNodeOfTheIndexRow(i).getTheColumnNodeOfTheIndexColumn(j).getValue(),
+                                        second.getTheRowNodeOfTheIndexRow(j),second.numberOfColumns), second.numberOfColumns);
 
-
-
-
+                            }
+                        }
+                    }
+                }
+            }
+            if (rowNode != null) {
+                rowNode.setRowNumber(i);
+                rows.addElement(rowNode);
+            }else if (rowNode==null){
+                MyLinkedList<ColumnNode> columnNodeMyLinkedList =new MyLinkedList<>();
+                rowNode =new RowNode(i,columnNodeMyLinkedList);
+                rows.addElement(rowNode);
+            }
         }
 
+        MyMatrix result = new MyMatrix(first.numberOfRows, second.numberOfColumns, rows);
+        return result;
     }
 
 
@@ -73,6 +101,19 @@ public class MyMatrix {
         }
         return null;//todo
     }
+
+
+    public boolean existedRowIndex(int index) {
+        for (int i = 0; i < rows.getSize(); i++) {
+            if (rows.getElement(i).getRowNumber() == index) {
+                if (rows.getElement(i).getColumns().getSize() != 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     @Override
     public String toString() {

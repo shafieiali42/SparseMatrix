@@ -5,7 +5,7 @@ public class Input {
     public static void getInput(int numberOfSocialNetworks, MyLinkedList<String> allPeoples,
                                 MyLinkedList<String> allSubjects,
                                 MyLinkedList<SocialNetwork> allSocialNetworks,
-                                MyLinkedList<Question> questions,Scanner myScanner) {
+                                MyLinkedList<Question> questions, Scanner myScanner) {
 
         for (int i = 0; i < numberOfSocialNetworks; i++) {
             int numberOfSubject = myScanner.nextInt();
@@ -80,23 +80,29 @@ public class Input {
             MyMatrix friendShipMatrix = new MyMatrix(numberOfPeople, numberOfPeople, rowsOfFriendShip);
             SocialNetwork socialNetwork = new SocialNetwork(thisNetworksPeople, thisNetworksSubject, interestMatrix, friendShipMatrix);
             allSocialNetworks.addElement(socialNetwork);
-
-
-            int numberOfQuestions = myScanner.nextInt();
-            for (int j = 0; j < numberOfPeople; j++) {
-                int numberOfSubjects = myScanner.nextInt();
-                MyLinkedList<String> subjectsOfQuestion =new MyLinkedList<>();
-                for (int k = 0; k < numberOfSubject; k++) {
-                    subjectsOfQuestion.addElement(myScanner.next());
-                }
-                int depth =myScanner.nextInt();
-                Question question =new Question(numberOfSubject,subjectsOfQuestion,depth);
-                questions.addElement(question);
-            }
-
-
         }
+
+        int numberOfQuestions = myScanner.nextInt();
+        for (int j = 0; j < numberOfQuestions; j++) {
+            int numberOfSubjects = myScanner.nextInt();
+            MyLinkedList<String> subjectsOfQuestion = new MyLinkedList<>();
+            for (int k = 0; k < numberOfSubjects; k++) {
+                subjectsOfQuestion.addElement(myScanner.next());
+            }
+            int depth = myScanner.nextInt();
+            MyLinkedList<Integer> indexes =new MyLinkedList<>();
+            for (int i = 0; i < allSubjects.getSize(); i++) {
+                if (subjectsOfQuestion.contains(allSubjects.getElement(i))){
+                    indexes.addElement(i);
+                }
+            }
+            Question question = new Question(numberOfSubjects, indexes, depth,allPeoples);
+            questions.addElement(question);
+        }
+
+
     }
-
-
 }
+
+
+

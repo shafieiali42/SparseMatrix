@@ -10,30 +10,81 @@ public class RowNode {
     }
 
 
-    public RowNode(){
+    public RowNode() {
 
     }
 
-    public ColumnNode getTheColumnNodeOfTheIndexColumn(int index){
+
+    public static RowNode multiplyNumberToRow(double a, RowNode rowNode,int numberOfGeneralColumns) { // maybe should make new Row and Column
+        RowNode rowNode1 = rowNode.copy();
+        for (int i = 0; i < numberOfGeneralColumns; i++) {
+            if (rowNode1.existedIndexOfColumn(i)) {
+                rowNode1.getTheColumnNodeOfTheIndexColumn(i).setValue(rowNode1.getTheColumnNodeOfTheIndexColumn(i).getValue() * a);
+            }
+        }
+        return rowNode1;
+    }
+
+
+    public double sumOfElements(){
+        double sum=0d;
+        for (int i = 0; i < getColumns().getSize(); i++) {
+            sum+=getColumns().getElement(i).getValue();
+        }
+        return sum;
+    }
+
+
+    public static RowNode addTwoRowNode(RowNode first, RowNode second, int numberOfGeneralColumns) {
+        RowNode result = new RowNode();
+        MyLinkedList<ColumnNode> columns = new MyLinkedList<>();
+        for (int i = 0; i < numberOfGeneralColumns; i++) {
+            ColumnNode columnNode = new ColumnNode(i, 0d);
+            if (first.existedIndexOfColumn(i)) {
+                columnNode.setValue(columnNode.getValue() + first.getTheColumnNodeOfTheIndexColumn(i).getValue());
+            }
+            if (second.existedIndexOfColumn(i)) {
+                columnNode.setValue(columnNode.getValue() + second.getTheColumnNodeOfTheIndexColumn(i).getValue());
+            }
+            if (columnNode.getValue() != 0) {
+                columns.addElement(columnNode);
+            }
+        }
+        result.setColumns(columns);
+        return result;
+    }
+
+
+    public ColumnNode getTheColumnNodeOfTheIndexColumn(int index) {
         for (int i = 0; i < columns.getSize(); i++) {
-            if (columns.getElement(i).getColumnNumber()==index){
+            if (columns.getElement(i).getColumnNumber() == index) {
                 return columns.getElement(i);
             }
         }
-        return new ColumnNode(index,0d);
+        return new ColumnNode(index, 0d);
     }
 
 
-    public RowNode copy(){
-        MyLinkedList<ColumnNode> columnsCopy =new MyLinkedList<>();
+    public boolean existedIndexOfColumn(int index) {
+        for (int i = 0; i < columns.getSize(); i++) {
+            if (columns.getElement(i).getColumnNumber() == index) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public RowNode copy() {
+        MyLinkedList<ColumnNode> columnsCopy = new MyLinkedList<>();
         for (int i = 0; i < columns.getSize(); i++) {
 
-            ColumnNode column =new ColumnNode(getColumns().getElement(i).getColumnNumber(),
+            ColumnNode column = new ColumnNode(getColumns().getElement(i).getColumnNumber(),
                     getColumns().getElement(i).getValue());
 
             columnsCopy.addElement(column);
         }
-        RowNode row =new RowNode(rowNumber,columnsCopy);
+        RowNode row = new RowNode(rowNumber, columnsCopy);
         return row;
     }
 

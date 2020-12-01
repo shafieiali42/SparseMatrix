@@ -5,6 +5,7 @@ public class SocialNetworksMerger {
                                                       SocialNetwork socialNetwork2,
                                                       MyLinkedList<String> allPeoples,
                                                       MyLinkedList<String> allSubjects) {
+
         MyLinkedList<RowNode> rowsOfInterestMatrix = new MyLinkedList<>();
         for (int i = 0; i < allPeoples.getSize(); i++) {
             String peopleName = allPeoples.getElement(i);
@@ -12,17 +13,20 @@ public class SocialNetworksMerger {
             rowNode.setRowNumber(i);
             int index1 = findIndex(socialNetwork1.getPeoples(), peopleName);
             int index2 = findIndex(socialNetwork2.getPeoples(), peopleName);
-            if (index1 < 0) {
-                RowNode rowNode1 =new RowNode();
+            if (index1 < 0 && index2 < 0) {
+                RowNode rowNode1 = new RowNode();
                 rowNode1.setColumns(new MyLinkedList<>());
-                rowNode=addToRow(socialNetwork2.getInterestMatrix().getTheRowNodeOfTheIndexRow(index2),rowNode1,
-                        socialNetwork2.getSubjects(),socialNetwork1.getSubjects(),allSubjects);
+            } else if (index1 < 0) {
+                RowNode rowNode1 = new RowNode();
+                rowNode1.setColumns(new MyLinkedList<>());
+                rowNode = addToRow(socialNetwork2.getInterestMatrix().getTheRowNodeOfTheIndexRow(index2), rowNode1,
+                        socialNetwork2.getSubjects(), socialNetwork1.getSubjects(), allSubjects);
 //                rowNode = socialNetwork2.getInterestMatrix().getRows().getElement(index2);//todo maybe should get by Index
             } else if (index2 < 0) {
-                RowNode rowNode1 =new RowNode();
+                RowNode rowNode1 = new RowNode();
                 rowNode1.setColumns(new MyLinkedList<>());
-                rowNode=addToRow(socialNetwork1.getInterestMatrix().getTheRowNodeOfTheIndexRow(index1),rowNode1,
-                        socialNetwork1.getSubjects(),socialNetwork2.getSubjects(),allSubjects);
+                rowNode = addToRow(socialNetwork1.getInterestMatrix().getTheRowNodeOfTheIndexRow(index1), rowNode1,
+                        socialNetwork1.getSubjects(), socialNetwork2.getSubjects(), allSubjects);
 //                rowNode = socialNetwork1.getInterestMatrix().getRows().getElement(index1);// ''''''''''
             } else {
                 rowNode = addToRow(socialNetwork1.getInterestMatrix().getRows().getElement(index1),
@@ -44,21 +48,22 @@ public class SocialNetworksMerger {
             rowNode.setRowNumber(i);
             int index1 = findIndex(socialNetwork1.getPeoples(), peopleName);
             int index2 = findIndex(socialNetwork2.getPeoples(), peopleName);
-            if (index1 < 0) {
-                RowNode rowNode1 =new RowNode();
+            if (index1 < 0 && index2 < 0) {
+                RowNode rowNode1 = new RowNode();
                 rowNode1.setColumns(new MyLinkedList<>());
-                rowNode=addToRow(socialNetwork2.getFriendShipMatrix().getTheRowNodeOfTheIndexRow(index2),rowNode1,
-                        socialNetwork2.getPeoples(),socialNetwork1.getPeoples(),allPeoples);
+            } else if (index1 < 0) {
+                RowNode rowNode1 = new RowNode();
+                rowNode1.setColumns(new MyLinkedList<>());
+                rowNode = addToRow(socialNetwork2.getFriendShipMatrix().getTheRowNodeOfTheIndexRow(index2), rowNode1,
+                        socialNetwork2.getPeoples(), socialNetwork1.getPeoples(), allPeoples);
 //                rowNode = socialNetwork2.getFriendShipMatrix().getTheRowNodeOfTheIndexRow(index2);
             } else if (index2 < 0) {
-                RowNode rowNode1 =new RowNode();
+                RowNode rowNode1 = new RowNode();
                 rowNode1.setColumns(new MyLinkedList<>());
-                rowNode=addToRow(socialNetwork1.getFriendShipMatrix().getTheRowNodeOfTheIndexRow(index1),rowNode1,
-                        socialNetwork1.getPeoples(),socialNetwork1.getPeoples(),allPeoples);
+                rowNode = addToRow(socialNetwork1.getFriendShipMatrix().getTheRowNodeOfTheIndexRow(index1), rowNode1,
+                        socialNetwork1.getPeoples(), socialNetwork1.getPeoples(), allPeoples);
 //                rowNode = socialNetwork1.getFriendShipMatrix().getTheRowNodeOfTheIndexRow(index1);
             } else {
-
-
                 rowNode = addToRow(socialNetwork1.getFriendShipMatrix().getTheRowNodeOfTheIndexRow(index1),
                         socialNetwork2.getFriendShipMatrix().getTheRowNodeOfTheIndexRow(index2),
                         socialNetwork1.getPeoples(),
@@ -117,12 +122,16 @@ public class SocialNetworksMerger {
             ColumnNode columnNode = new ColumnNode(i, 0d);
             int index = findIndex(columns1, columns.getElement(i));
             if (index != -1) {
-                columnNode.setValue(columnNode.getValue() + rowNode1.getTheColumnNodeOfTheIndexColumn(index).getValue());
+                if (rowNode1.getColumns() != null) {//todo
+                    columnNode.setValue(columnNode.getValue() + rowNode1.getTheColumnNodeOfTheIndexColumn(index).getValue());
+                }
             }
 
             int index2 = findIndex(columns2, columns.getElement(i));
             if (index2 != -1) {
-                columnNode.setValue(columnNode.getValue() + rowNode2.getTheColumnNodeOfTheIndexColumn(index2).getValue());
+                if (rowNode2.getColumns() != null) {//todo
+                    columnNode.setValue(columnNode.getValue() + rowNode2.getTheColumnNodeOfTheIndexColumn(index2).getValue());
+                }
             }
 
             if (columnNode.getValue() != 0) {
