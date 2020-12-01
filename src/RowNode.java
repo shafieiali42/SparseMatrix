@@ -24,6 +24,20 @@ public class RowNode {
     }
 
 
+    public RowNode copy(){
+        MyLinkedList<ColumnNode> columnsCopy =new MyLinkedList<>();
+        for (int i = 0; i < columns.getSize(); i++) {
+
+            ColumnNode column =new ColumnNode(getColumns().getElement(i).getColumnNumber(),
+                    getColumns().getElement(i).getValue());
+
+            columnsCopy.addElement(column);
+        }
+        RowNode row =new RowNode(rowNumber,columnsCopy);
+        return row;
+    }
+
+
     @Override
     public String toString() {
         return "[  rowNumber: " + rowNumber + "   " + columns + " ]";

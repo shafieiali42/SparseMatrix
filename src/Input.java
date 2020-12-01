@@ -4,7 +4,8 @@ public class Input {
 
     public static void getInput(int numberOfSocialNetworks, MyLinkedList<String> allPeoples,
                                 MyLinkedList<String> allSubjects,
-                                MyLinkedList<SocialNetwork> allSocialNetworks, Scanner myScanner) {
+                                MyLinkedList<SocialNetwork> allSocialNetworks,
+                                MyLinkedList<Question> questions,Scanner myScanner) {
 
         for (int i = 0; i < numberOfSocialNetworks; i++) {
             int numberOfSubject = myScanner.nextInt();
@@ -79,6 +80,21 @@ public class Input {
             MyMatrix friendShipMatrix = new MyMatrix(numberOfPeople, numberOfPeople, rowsOfFriendShip);
             SocialNetwork socialNetwork = new SocialNetwork(thisNetworksPeople, thisNetworksSubject, interestMatrix, friendShipMatrix);
             allSocialNetworks.addElement(socialNetwork);
+
+
+            int numberOfQuestions = myScanner.nextInt();
+            for (int j = 0; j < numberOfPeople; j++) {
+                int numberOfSubjects = myScanner.nextInt();
+                MyLinkedList<String> subjectsOfQuestion =new MyLinkedList<>();
+                for (int k = 0; k < numberOfSubject; k++) {
+                    subjectsOfQuestion.addElement(myScanner.next());
+                }
+                int depth =myScanner.nextInt();
+                Question question =new Question(numberOfSubject,subjectsOfQuestion,depth);
+                questions.addElement(question);
+            }
+
+
         }
     }
 
