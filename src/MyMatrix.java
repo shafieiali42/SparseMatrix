@@ -31,15 +31,90 @@ public class MyMatrix {
             if (isAxis) {
                 for (int j = 0; j < copy.getNumberOfColumns(); j++) {
                     if (!indexes.contains(j)) {
-                            if (copy.getTheRowNodeOfTheIndexRow(i).existedIndexOfColumn(j)){
-                                copy.getTheRowNodeOfTheIndexRow(i).getTheColumnNodeOfTheIndexColumn(j).setValue(0);
-                            }
+                        if (copy.getTheRowNodeOfTheIndexRow(i).existedIndexOfColumn(j)) {
+                            copy.getTheRowNodeOfTheIndexRow(i).getTheColumnNodeOfTheIndexColumn(j).setValue(0);
+                        }
                     }
                 }
             }
         }
         return copy;
     }
+
+
+    public static MyLinkedList<ColumnNode> multiplyMatrixToColumn(MyMatrix first, MyLinkedList<ColumnNode> second) {
+        MyLinkedList<ColumnNode> result=new MyLinkedList<>();
+        for (int i = 0; i < first.getRows().getSize(); i++) {
+            ColumnNode columnNode=multiplyTwoList(first.getTheRowNodeOfTheIndexRow(i).getColumns(),second,i);
+            columnNode.setColumnNumber(i);
+            result.addElement(columnNode);
+        }
+
+        return result;
+    }
+
+
+    public static MyLinkedList<ColumnNode> convertMatrixToList(MyMatrix matrix,MyLinkedList<Integer> indexes) {
+        MyLinkedList<ColumnNode> result = new MyLinkedList<>();
+        for (int i = 0; i < matrix.getNumberOfRows(); i++) {
+            double sum = 0d;
+            boolean isAxis =true;
+            for (int j = 0; j < indexes.getSize(); j++) {
+                sum+=matrix.getRows().getElement(i).getTheColumnNodeOfTheIndexColumn(indexes.getElement(j)).getValue();
+                if (matrix.getRows().getElement(i).getTheColumnNodeOfTheIndexColumn(indexes.getElement(j)).getValue()==0){
+                    isAxis=false;
+                }
+            }
+            if (!isAxis){ //maybe memory limit
+                sum=0;
+            }
+            result.addElement(new ColumnNode(i,sum));
+        }
+        return result;
+    }
+
+    static ColumnNode multiplyTwoList(MyLinkedList<ColumnNode> l1, MyLinkedList<ColumnNode> l2, int index) {
+        Node<ColumnNode> v1 = l1.getNode(0), v2 = l2.getNode(0), result = new Node<>();
+
+        result.setElement(new ColumnNode(index,0));
+
+        while (v1 != null && v2 != null) {
+            if (v1.getElement().getColumnNumber() == v2.getElement().getColumnNumber()) {
+                result.getElement().setValue(result.getElement().getValue() +
+                        (v1.getElement().getValue() * v2.getElement().getValue()));
+                v1 = v1.getNext();
+            } else if (v1.getElement().getColumnNumber() > v2.getElement().getColumnNumber()) {
+                v2 = v2.getNext();
+            } else if (v1.getElement().getColumnNumber() < v2.getElement().getColumnNumber()) {
+                v1 = v1.getNext();
+            }
+        }
+        result.getElement().setColumnNumber(index);
+        if (result.getElement().getValue() > 0) {
+            result.setIndex(index);
+            return result.getElement();
+        } else {
+            return result.getElement();
+        }
+    }
+
+
+
+
+
+//    public static double multiplyMatrixToRow(MyMatrix matrix,MyLinkedList<Double>list){
+//        MyLinkedList<Double> result =new MyLinkedList<>();
+//        for (int i = 0; i < matrix.getRows().getSize(); i++) {
+//            double element =
+//        }
+//
+//
+//
+//    }
+
+
+
+
 
 
     public static MyMatrix multiplyMatrix(MyMatrix first, MyMatrix second) {
@@ -50,30 +125,30 @@ public class MyMatrix {
         MyLinkedList<RowNode> rows = new MyLinkedList<>();
         for (int i = 0; i < first.numberOfRows; i++) {
             RowNode rowNode = null;
-            if (first.existedRowIndex(i)) {
-                for (int j = 0; j < second.getNumberOfRows(); j++) {
-                    if (second.existedRowIndex(j)) {
-                        if (first.getTheRowNodeOfTheIndexRow(i).existedIndexOfColumn(j)) {
-                            if (rowNode == null) {
-                                rowNode = RowNode.multiplyNumberToRow(
-                                        first.getTheRowNodeOfTheIndexRow(i).getTheColumnNodeOfTheIndexColumn(j).getValue(),
-                                        second.getTheRowNodeOfTheIndexRow(j),second.numberOfColumns);
-                            } else {
-                                rowNode = RowNode.addTwoRowNode(rowNode, RowNode.multiplyNumberToRow(
-                                        first.getTheRowNodeOfTheIndexRow(i).getTheColumnNodeOfTheIndexColumn(j).getValue(),
-                                        second.getTheRowNodeOfTheIndexRow(j),second.numberOfColumns), second.numberOfColumns);
+//            if (first.existedRowIndex(i)) {
+            for (int j = 0; j < second.getNumberOfRows(); j++) {
+//                    if (second.existedRowIndex(j)) {
+                if (first.getTheRowNodeOfTheIndexRow(i).existedIndexOfColumn(j)) {
+                    if (rowNode == null) {
+                        rowNode = RowNode.multiplyNumberToRow(
+                                first.getTheRowNodeOfTheIndexRow(i).getTheColumnNodeOfTheIndexColumn(j).getValue(),
+                                second.getTheRowNodeOfTheIndexRow(j), second.numberOfColumns);
+                    } else {
+                        rowNode = RowNode.addTwoRowNode(rowNode, RowNode.multiplyNumberToRow(
+                                first.getTheRowNodeOfTheIndexRow(i).getTheColumnNodeOfTheIndexColumn(j).getValue(),
+                                second.getTheRowNodeOfTheIndexRow(j), second.numberOfColumns), second.numberOfColumns);
 
-                            }
-                        }
                     }
                 }
             }
+//                }
+//            }
             if (rowNode != null) {
                 rowNode.setRowNumber(i);
                 rows.addElement(rowNode);
-            }else if (rowNode==null){
-                MyLinkedList<ColumnNode> columnNodeMyLinkedList =new MyLinkedList<>();
-                rowNode =new RowNode(i,columnNodeMyLinkedList);
+            } else if (rowNode == null) {
+                MyLinkedList<ColumnNode> columnNodeMyLinkedList = new MyLinkedList<>();
+                rowNode = new RowNode(i, columnNodeMyLinkedList);
                 rows.addElement(rowNode);
             }
         }

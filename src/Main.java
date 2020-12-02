@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
+
         MyLinkedList<String> allPeoples = new MyLinkedList<>();
         MyLinkedList<String> allSubjects = new MyLinkedList<>();
         MyLinkedList<SocialNetwork> allSocialNetworks = new MyLinkedList<>();
@@ -26,6 +27,7 @@ public class Main {
 //                generalSocialNetwork.getInterestMatrix()));
 
         for (int i = 0; i < questions.getSize(); i++) {
+
             questions.getElement(i).response(generalSocialNetwork,questions.getElement(i).getDepth());
         }
 

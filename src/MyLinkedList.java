@@ -54,26 +54,22 @@ public class MyLinkedList<E> {
     }
 
 
-    public void swap(int i) { //todo
-//        getNode(i).getElement()
-
-    }
 
     public static void sort(MyLinkedList<OutPut> myLinkedList) {//todo
 
-
-        Node<OutPut> v = myLinkedList.head, u = myLinkedList.head;
+        Node<OutPut> node = myLinkedList.head;
+        Node<OutPut>node1 ;
         for (int i = 0; i < myLinkedList.size; i++) {
-            u = v;
+            node1 = node;
             for (int j = i + 1; j < myLinkedList.size; j++) {
-                u = u.getNext();
-                if (u != null && OutPut.compare(u.getElement(), v.getElement())) {
-                    OutPut temp = u.getElement();
-                    u.setElement(v.getElement());
-                    v.setElement(temp);
+                node1 = node1.getNext();
+                if (node1 != null && OutPut.compare(node1.getElement(), node.getElement())) {
+                    OutPut temp = node1.getElement();
+                    node1.setElement(node.getElement());
+                    node.setElement(temp);
                 }
             }
-            v = v.getNext();
+            node = node.getNext();
         }
     }
 
@@ -93,7 +89,9 @@ public class MyLinkedList<E> {
 
 
     public void addElement(E element) {
+
         Node<E> node = new Node<>(element, null);
+        node.setIndex(size);
         if (size > 0) {
             this.last.setNext(node);
             this.last = node;
