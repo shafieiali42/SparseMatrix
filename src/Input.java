@@ -7,6 +7,7 @@ public class Input {
                                 MyLinkedList<SocialNetwork> allSocialNetworks,
                                 MyLinkedList<Question> questions, Scanner myScanner) {
 
+
         for (int i = 0; i < numberOfSocialNetworks; i++) {
             int numberOfSubject = myScanner.nextInt();
             MyLinkedList<String> thisNetworksSubject = new MyLinkedList<>();
@@ -15,10 +16,12 @@ public class Input {
                 String subjectName = myScanner.next();
                 thisNetworksSubject.addElement(subjectName);
             }
+            Node<String> node = thisNetworksSubject.getNode(0);
             for (int j = 0; j < thisNetworksSubject.getSize(); j++) {
-                if (!allSubjects.contains(thisNetworksSubject.getElement(j))) {
-                    allSubjects.addElement(thisNetworksSubject.getElement(j));
+                if (!allSubjects.contains(node.getElement())) {
+                    allSubjects.addElement(node.getElement());
                 }
+                node = node.getNext();
             }
 
 
@@ -90,13 +93,15 @@ public class Input {
                 subjectsOfQuestion.addElement(myScanner.next());
             }
             int depth = myScanner.nextInt();
-            MyLinkedList<Integer> indexes =new MyLinkedList<>();
+            MyLinkedList<Integer> indexes = new MyLinkedList<>();
+            Node<String> node = allSubjects.getNode(0);
             for (int i = 0; i < allSubjects.getSize(); i++) {
-                if (subjectsOfQuestion.contains(allSubjects.getElement(i))){
+                if (subjectsOfQuestion.contains(node.getElement())) {
                     indexes.addElement(i);
                 }
+                node = node.getNext();
             }
-            Question question = new Question(numberOfSubjects, indexes, depth,allPeoples);
+            Question question = new Question(numberOfSubjects, indexes, depth, allPeoples);
             questions.addElement(question);
         }
 

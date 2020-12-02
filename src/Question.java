@@ -46,13 +46,17 @@ public class Question {
 
 
     public void zeroDepth(SocialNetwork socialNetwork) {
-        zero = MyMatrix.convertMatrixToList(socialNetwork.getInterestMatrix(),indexOfSubjects);
+        zero = MyMatrix.convertMatrixToList(socialNetwork.getInterestMatrix(), indexOfSubjects);
+        Node<ColumnNode> node = zero.getNode(0);
+        Node<String> node1 = allPeoples.getNode(0);
         for (int i = 0; i < zero.getSize(); i++) { //todo need {nul} row
-            double value = zero.getElement(i).getValue();
+            double value = node.getElement().getValue();
             if (value != 0) {
-                OutPut outPut = new OutPut(allPeoples.getElement(i), value, 0);
+                OutPut outPut = new OutPut(node1.getElement(), value, 0);
                 outPuts.addElement(outPut);
             }
+            node = node.getNext();
+            node1 = node1.getNext();
         }
     }
 
@@ -61,21 +65,27 @@ public class Question {
         zeroDepth(socialNetwork);
         first = MyMatrix.multiplyMatrixToColumn(socialNetwork.getFriendShipMatrix(), zero);
 //        first = MyMatrix.convertMatrixToList(first, indexOfSubjects);
+        Node<ColumnNode> node = first.getNode(0);
+        Node<String> node1 = allPeoples.getNode(0);
         for (int i = 0; i < first.getSize(); i++) {
-            double value = first.getElement(i).getValue();
+            double value = node.getElement().getValue();
             if (value != 0) {
                 boolean duplicated = false;
+                Node<OutPut> node2 = outPuts.getNode(0);
                 for (int j = 0; j < outPuts.getSize(); j++) {
-                    if (outPuts.getElement(j).getName().
-                            equals(allPeoples.getElement(i))) {
+                    if (node2.getElement().getName().
+                            equals(node1.getElement())) {
                         duplicated = true;
                     }
+                    node2 = node2.getNext();
                 }
                 if (!duplicated) {
-                    OutPut outPut = new OutPut(allPeoples.getElement(i), value, 1);
+                    OutPut outPut = new OutPut(node1.getElement(), value, 1);
                     outPuts.addElement(outPut);
                 }
             }
+            node = node.getNext();
+            node1 = node1.getNext();
         }
     }
 
@@ -84,22 +94,27 @@ public class Question {
         oneDepth(socialNetwork);
         two = MyMatrix.multiplyMatrixToColumn(socialNetwork.getFriendShipMatrix(), first);
 //        two = MyMatrix.calculateQuestionMatrix(two, indexOfSubjects);
+        Node<ColumnNode> node = two.getNode(0);
+        Node<String> stringNode = allPeoples.getNode(0);
         for (int i = 0; i < two.getSize(); i++) {
-            double value = two.getElement(i).getValue();
+            double value = node.getElement().getValue();
             if (value != 0) {
                 boolean duplicated = false;
+                Node<OutPut> node2 = outPuts.getNode(0);
                 for (int j = 0; j < outPuts.getSize(); j++) {
-                    if (outPuts.getElement(j).getName().
-                            equals(allPeoples.getElement(i))) {
+                    if (node2.getElement().getName().
+                            equals(stringNode.getElement())) {
                         duplicated = true;
                     }
+                    node2 = node2.getNext();
                 }
                 if (!duplicated) {
-                    OutPut outPut = new OutPut(allPeoples.getElement(i), value, 2);
+                    OutPut outPut = new OutPut(stringNode.getElement(), value, 2);
                     outPuts.addElement(outPut);
                 }
-
             }
+            node = node.getNext();
+            stringNode = stringNode.getNext();
         }
 
     }
@@ -108,21 +123,27 @@ public class Question {
         twoDepth(socialNetwork);
         three = MyMatrix.multiplyMatrixToColumn(socialNetwork.getFriendShipMatrix(), two);
 //        three = MyMatrix.calculateQuestionMatrix(three, indexOfSubjects);
+        Node<ColumnNode> node = three.getNode(0);
+        Node<String> stringNode = allPeoples.getNode(0);
         for (int i = 0; i < three.getSize(); i++) {
-            double value = three.getElement(i).getValue();
+            double value = node.getElement().getValue();
             if (value != 0) {
                 boolean duplicated = false;
+                Node<OutPut> node2 = outPuts.getNode(0);
                 for (int j = 0; j < outPuts.getSize(); j++) {
-                    if (outPuts.getElement(j).getName().
-                            equals(allPeoples.getElement(i))) {
+                    if (node2.getElement().getName().
+                            equals(stringNode.getElement())) {
                         duplicated = true;
                     }
+                    node2 = node2.getNext();
                 }
                 if (!duplicated) {
-                    OutPut outPut = new OutPut(allPeoples.getElement(i), value, 3);
+                    OutPut outPut = new OutPut(stringNode.getElement(), value, 3);
                     outPuts.addElement(outPut);
                 }
             }
+            node = node.getNext();
+            stringNode = stringNode.getNext();
         }
 
 
@@ -140,9 +161,11 @@ public class Question {
             threeDepth(socialNetwork);
         }
 
-       MyLinkedList.sort(outPuts);
+        MyLinkedList.sort(outPuts);
+        Node<OutPut> node = outPuts.getNode(0);
         for (int i = 0; i < outPuts.getSize(); i++) {
-            outPuts.getElement(i).print();
+            node.getElement().print();
+            node = node.getNext();
         }
 
     }

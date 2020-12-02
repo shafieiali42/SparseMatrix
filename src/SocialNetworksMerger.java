@@ -7,8 +7,9 @@ public class SocialNetworksMerger {
                                                       MyLinkedList<String> allSubjects) {
 
         MyLinkedList<RowNode> rowsOfInterestMatrix = new MyLinkedList<>();
+        Node<String> node =allPeoples.getNode(0);
         for (int i = 0; i < allPeoples.getSize(); i++) {
-            String peopleName = allPeoples.getElement(i);
+            String peopleName =node.getElement();
             RowNode rowNode = new RowNode();
             rowNode.setRowNumber(i);
             int index1 = findIndex(socialNetwork1.getPeoples(), peopleName);
@@ -37,13 +38,15 @@ public class SocialNetworksMerger {
             }
             rowNode.setRowNumber(i);
             rowsOfInterestMatrix.addElement(rowNode);
+            node=node.getNext();
         }
         MyMatrix interestMatrix = new MyMatrix(allPeoples.getSize(), allSubjects.getSize(), rowsOfInterestMatrix);
 
 
         MyLinkedList<RowNode> rowsOfFriendShipMatrix = new MyLinkedList<>();
+        Node<String> node1 =allPeoples.getNode(0);
         for (int i = 0; i < allPeoples.getSize(); i++) {
-            String peopleName = allPeoples.getElement(i);
+            String peopleName = node1.getElement();
             RowNode rowNode = new RowNode();
             rowNode.setRowNumber(i);
             int index1 = findIndex(socialNetwork1.getPeoples(), peopleName);
@@ -72,6 +75,7 @@ public class SocialNetworksMerger {
             }
             rowNode.setRowNumber(i);
             rowsOfFriendShipMatrix.addElement(rowNode);
+            node1=node1.getNext();
         }
         MyMatrix friendShipMatrix = new MyMatrix(allPeoples.getSize(), allPeoples.getSize(), rowsOfFriendShipMatrix);
 
@@ -101,11 +105,12 @@ public class SocialNetworksMerger {
 
     public static int findIndex(MyLinkedList<String> localColumns,
                                 String columnName) {
-
+        Node<String> nodeNode =localColumns.getNode(0);
         for (int j = 0; j < localColumns.getSize(); j++) {
-            if (localColumns.getElement(j).equals(columnName)) {
+            if (nodeNode.getElement().equals(columnName)) {
                 return j;
             }
+            nodeNode=nodeNode.getNext();
         }
         return -1;
     }
@@ -118,16 +123,18 @@ public class SocialNetworksMerger {
 
         MyLinkedList<ColumnNode> resultColumn = new MyLinkedList<>();
 
+
+        Node<String> nodeNode =columns.getNode(0);
         for (int i = 0; i < columns.getSize(); i++) {
             ColumnNode columnNode = new ColumnNode(i, 0d);
-            int index = findIndex(columns1, columns.getElement(i));
+            int index = findIndex(columns1,nodeNode.getElement());
             if (index != -1) {
                 if (rowNode1.getColumns() != null) {//todo
                     columnNode.setValue(columnNode.getValue() + rowNode1.getTheColumnNodeOfTheIndexColumn(index).getValue());
                 }
             }
 
-            int index2 = findIndex(columns2, columns.getElement(i));
+            int index2 = findIndex(columns2, nodeNode.getElement());
             if (index2 != -1) {
                 if (rowNode2.getColumns() != null) {//todo
                     columnNode.setValue(columnNode.getValue() + rowNode2.getTheColumnNodeOfTheIndexColumn(index2).getValue());
@@ -137,6 +144,7 @@ public class SocialNetworksMerger {
             if (columnNode.getValue() != 0) {
                 resultColumn.addElement(columnNode);
             }
+            nodeNode=nodeNode.getNext();
         }
 
         RowNode rowNode = new RowNode();

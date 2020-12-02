@@ -55,8 +55,7 @@ public class MyLinkedList<E> {
 
 
 
-    public static void sort(MyLinkedList<OutPut> myLinkedList) {//todo
-
+    public static void sort(MyLinkedList<OutPut> myLinkedList) {
         Node<OutPut> node = myLinkedList.head;
         Node<OutPut>node1 ;
         for (int i = 0; i < myLinkedList.size; i++) {
@@ -74,18 +73,6 @@ public class MyLinkedList<E> {
     }
 
 
-    public static MyLinkedList<String> union(MyLinkedList<String> first, MyLinkedList<String> second) {
-        MyLinkedList<String> result = new MyLinkedList<>();
-        for (int i = 0; i < first.getSize(); i++) {
-            result.addElement(first.getElement(i));
-        }
-        for (int i = 0; i < second.getSize(); i++) {
-            if (!result.contains(second.getElement(i))) {
-                result.addElement(second.getElement(i));
-            }
-        }
-        return result;
-    }
 
 
     public void addElement(E element) {
@@ -125,10 +112,13 @@ public class MyLinkedList<E> {
 
 
     public boolean contains(E element) {
+        Node<E> node =getNode(0);
         for (int i = 0; i < size; i++) {
-            if (getElement(i).equals(element)) {
+            if (node.getElement().equals(element)) {
+                node=node.getNext();
                 return true;
             }
+            node=node.getNext();
         }
         return false;
     }
