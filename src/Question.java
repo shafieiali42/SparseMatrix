@@ -66,7 +66,7 @@ public class Question {
         first = MyMatrix.multiplyMatrixToColumn(socialNetwork.getFriendShipMatrix(), zero);
 //        first = MyMatrix.convertMatrixToList(first, indexOfSubjects);
         Node<ColumnNode> node = first.getNode(0);
-        Node<String> node1 = allPeoples.getNode(0);
+        Node<String> node1 = allPeoples.getNode(node.getElement().getColumnNumber());
         for (int i = 0; i < first.getSize(); i++) {
             double value = node.getElement().getValue();
             if (value != 0) {
@@ -85,7 +85,9 @@ public class Question {
                 }
             }
             node = node.getNext();
-            node1 = node1.getNext();
+            if (node != null) {
+                node1 = allPeoples.getNode(node.getElement().getColumnNumber());
+            }
         }
     }
 
@@ -95,7 +97,7 @@ public class Question {
         two = MyMatrix.multiplyMatrixToColumn(socialNetwork.getFriendShipMatrix(), first);
 //        two = MyMatrix.calculateQuestionMatrix(two, indexOfSubjects);
         Node<ColumnNode> node = two.getNode(0);
-        Node<String> stringNode = allPeoples.getNode(0);
+        Node<String> stringNode = allPeoples.getNode(node.getElement().getColumnNumber());
         for (int i = 0; i < two.getSize(); i++) {
             double value = node.getElement().getValue();
             if (value != 0) {
@@ -114,7 +116,9 @@ public class Question {
                 }
             }
             node = node.getNext();
-            stringNode = stringNode.getNext();
+            if (node != null) {
+                stringNode = allPeoples.getNode(node.getElement().getColumnNumber());
+            }
         }
 
     }
@@ -124,7 +128,7 @@ public class Question {
         three = MyMatrix.multiplyMatrixToColumn(socialNetwork.getFriendShipMatrix(), two);
 //        three = MyMatrix.calculateQuestionMatrix(three, indexOfSubjects);
         Node<ColumnNode> node = three.getNode(0);
-        Node<String> stringNode = allPeoples.getNode(0);
+        Node<String> stringNode = allPeoples.getNode(node.getElement().getColumnNumber());
         for (int i = 0; i < three.getSize(); i++) {
             double value = node.getElement().getValue();
             if (value != 0) {
@@ -143,7 +147,9 @@ public class Question {
                 }
             }
             node = node.getNext();
-            stringNode = stringNode.getNext();
+            if (node != null) {
+                stringNode = allPeoples.getNode(node.getElement().getColumnNumber());
+            }
         }
 
 

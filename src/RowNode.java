@@ -15,15 +15,15 @@ public class RowNode {
     }
 
 
-//    public static RowNode multiplyNumberToRow(double a, RowNode rowNode, int numberOfGeneralColumns) { // maybe should make new Row and Column
-//        RowNode rowNode1 = rowNode.copy();
-//        for (int i = 0; i < numberOfGeneralColumns; i++) {
-//            if (rowNode1.existedIndexOfColumn(i)) {
-//                rowNode1.getTheColumnNodeOfTheIndexColumn(i).setValue(rowNode1.getTheColumnNodeOfTheIndexColumn(i).getValue() * a);
-//            }
-//        }
-//        return rowNode1;
-//    }
+    public static RowNode multiplyNumberToRow(double a, RowNode rowNode, int numberOfGeneralColumns) { // maybe should make new Row and Column
+        RowNode rowNode1 = rowNode.copy();
+        for (int i = 0; i < numberOfGeneralColumns; i++) {
+            if (rowNode1.existedIndexOfColumn(i)) {
+                rowNode1.getTheColumnNodeOfTheIndexColumn(i).setValue(rowNode1.getTheColumnNodeOfTheIndexColumn(i).getValue() * a);
+            }
+        }
+        return rowNode1;
+    }
 
 
 //    public double sumOfElements(){

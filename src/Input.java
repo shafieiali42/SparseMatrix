@@ -34,9 +34,6 @@ public class Input {
                 }
                 thisNetworksPeople.addElement(peopleName);
                 int fi = myScanner.nextInt();
-//                if (fi==0){
-//                    continue;
-//                }
                 MyLinkedList<ColumnNode> columns = new MyLinkedList<>();
                 for (int k = 0; k < fi; k++) {
                     String compound = myScanner.next();
@@ -111,6 +108,3 @@ public class Input {
 
     }
 }
-
-
-

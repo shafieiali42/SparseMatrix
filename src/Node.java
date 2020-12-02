@@ -9,7 +9,7 @@ public class Node<E> {
         this.next = next;
     }
 
-    public Node(){
+    public Node() {
 
     }
 
@@ -23,9 +23,9 @@ public class Node<E> {
 
     @Override
     public String toString() {
-        if (next!=null){
-            return element.toString() +" , "+ next  ;
-        }else {
+        if (next != null) {
+            return element.toString() + " , " + next;
+        } else {
             return element.toString();
         }
     }

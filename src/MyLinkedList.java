@@ -18,20 +18,20 @@ public class MyLinkedList<E> {
     }
 
 
-//    public void setElement(E element, int index) {
-//
-//        if (index == 0) {
-//            Node<E> node = new Node<>(element, getNode(index).getNext());
-//            head = node;
-//        } else if (index == (size - 1)) {
-//            Node<E> node = new Node<>(element, null);
-//            last = node;
-//            getNode(index - 1).setNext(node);
-//        } else {
-//            Node<E> node = new Node<>(element, getNode(index).getNext());
-//            getNode(index - 1).setNext(node);
-//        }
-//    }
+    public void setElement(E element, int index) {
+
+        if (index == 0) {
+            Node<E> node = new Node<>(element, getNode(index).getNext());
+            head = node;
+        } else if (index == (size - 1)) {
+            Node<E> node = new Node<>(element, null);
+            last = node;
+            getNode(index - 1).setNext(node);
+        } else {
+            Node<E> node = new Node<>(element, getNode(index).getNext());
+            getNode(index - 1).setNext(node);
+        }
+    }
 
 
     public E getElement(int index) {
@@ -54,10 +54,9 @@ public class MyLinkedList<E> {
     }
 
 
-
     public static void sort(MyLinkedList<OutPut> myLinkedList) {
         Node<OutPut> node = myLinkedList.head;
-        Node<OutPut>node1 ;
+        Node<OutPut> node1;
         for (int i = 0; i < myLinkedList.size; i++) {
             node1 = node;
             for (int j = i + 1; j < myLinkedList.size; j++) {
@@ -71,8 +70,6 @@ public class MyLinkedList<E> {
             node = node.getNext();
         }
     }
-
-
 
 
     public void addElement(E element) {
@@ -95,30 +92,29 @@ public class MyLinkedList<E> {
     }
 
 
-//    public void delete(int index) throws OutOfBoundException { //todo need to check
-//        if (index >= size) {
-//            throw new OutOfBoundException("index: " + index + " is out of bound");
-//        }
-//        if (index == 0) {
-//            head = head.getNext();
-//        } else if (index == (size - 1)) {
-//            last = getNode(size - 2);
-//            last.setNext(null);
-//        } else {
-//            getNode(index - 1).setNext(getNode(index + 1));
-//        }
-//        size--;
-//    }
+    public void delete(int index) throws OutOfBoundException { //todo need to check
+        if (index >= size) {
+            throw new OutOfBoundException("index: " + index + " is out of bound");
+        }
+        if (index == 0) {
+            head = head.getNext();
+        } else if (index == (size - 1)) {
+            last = getNode(size - 2);
+            last.setNext(null);
+        } else {
+            getNode(index - 1).setNext(getNode(index + 1));
+        }
+        size--;
+    }
 
 
     public boolean contains(E element) {
-        Node<E> node =getNode(0);
+        Node<E> node = getNode(0);
         for (int i = 0; i < size; i++) {
             if (node.getElement().equals(element)) {
-                node=node.getNext();
                 return true;
             }
-            node=node.getNext();
+            node = node.getNext();
         }
         return false;
     }
@@ -154,3 +150,4 @@ public class MyLinkedList<E> {
         this.size = size;
     }
 }
+

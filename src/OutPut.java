@@ -13,19 +13,18 @@ public class OutPut {
     }
 
 
-
-    public static boolean compare(OutPut outPut1,OutPut outPut2){
-        if (outPut1.depth<outPut2.depth){
+    public static boolean compare(OutPut outPut1, OutPut outPut2) {
+        if (outPut1.depth < outPut2.depth) {
             return true;
-        }else if (outPut1.depth>outPut2.depth){
+        } else if (outPut1.depth > outPut2.depth) {
             return false;
-        }else if (outPut1.value>outPut2.value){
+        } else if (outPut1.value > outPut2.value) {
             return true;
-        }else if (outPut1.value<outPut2.value){
+        } else if (outPut1.value < outPut2.value) {
             return false;
-        }else if (outPut1.name.compareTo(outPut2.name)<0){
+        } else if (outPut1.name.compareTo(outPut2.name) < 0) {
             return true;
-        }else if (outPut1.name.compareTo(outPut2.name)>0){
+        } else if (outPut1.name.compareTo(outPut2.name) > 0) {
             return false;
         }
         return true;
@@ -37,9 +36,9 @@ public class OutPut {
         for (int i = 0; i < depth; i++) {
             plus = plus + "+";
         }
-        System.out.print(name+" ");
-        System.out.printf("%6f",value);
-        System.out.println(" "+plus);
+        System.out.print(name + " ");
+        System.out.printf("%6f", value);
+        System.out.println(" " + plus);
     }
 
 

@@ -1,8 +1,8 @@
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
 
         MyLinkedList<String> allPeoples = new MyLinkedList<>();
         MyLinkedList<String> allSubjects = new MyLinkedList<>();
@@ -23,4 +23,7 @@ public class Main {
         }
 
     }
+
+
+
 }

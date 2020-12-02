@@ -1,3 +1,4 @@
+
 public class ColumnNode {
 
     private int columnNumber;
@@ -10,11 +11,9 @@ public class ColumnNode {
     }
 
 
-
-
     @Override
     public String toString() {
-        return "columnNumber: "+ columnNumber +"  "  +value+"";
+        return "columnNumber: " + columnNumber + "  " + value + "";
     }
 
     public int getColumnNumber() {

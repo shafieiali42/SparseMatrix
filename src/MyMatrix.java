@@ -13,18 +13,17 @@ public class MyMatrix {
     }
 
 
-    public static MyLinkedList<ColumnNode> multiplyMatrixToColumn(MyMatrix first, MyLinkedList<ColumnNode> second) {
+    public static MyLinkedList<ColumnNode> multiplyMatrixToColumn(MyMatrix matrix, MyLinkedList<ColumnNode> l) {
         MyLinkedList<ColumnNode> result = new MyLinkedList<>();
-        MyLinkedList<RowNode> myLinkedList =new MyLinkedList<>();
-        for (int i = 0; i < first.getRows().getSize(); i++) {
-            myLinkedList.addElement(first.getTheRowNodeOfTheIndexRow(i));
-        }
-        Node<RowNode> rowNodeNode = myLinkedList.getNode(0);
-        for (int i = 0; i < first.getRows().getSize(); i++) {
-            ColumnNode columnNode = multiplyTwoList(rowNodeNode.getElement().getColumns(), second, i);
-            columnNode.setColumnNumber(i);
-            result.addElement(columnNode);
-            rowNodeNode=rowNodeNode.getNext();
+        Node<RowNode> u = matrix.getRows().getHead();
+
+        while (u != null) {
+            Node<ColumnNode> v = multiplyTwoList(l, u.getElement().getColumns(), u.getIndex());
+            if (v != null) {
+                v.getElement().setColumnNumber(u.getElement().getRowNumber());
+                result.addElement(v.getElement());
+            }
+            u = u.getNext();
         }
         return result;
     }
@@ -33,7 +32,7 @@ public class MyMatrix {
     public static MyLinkedList<ColumnNode> convertMatrixToList(MyMatrix matrix, MyLinkedList<Integer> indexes) {
         MyLinkedList<ColumnNode> result = new MyLinkedList<>();
         Node<RowNode> rowNodeNode = matrix.getRows().getNode(0);
-        for (int i = 0; i < matrix.getRows().getSize(); i++) {
+        for (int i = 0; i < matrix.getNumberOfRows(); i++) {
             double sum = 0d;
             boolean isAxis = true;
             Node<Integer> node = indexes.getNode(0);
@@ -53,7 +52,7 @@ public class MyMatrix {
         return result;
     }
 
-    static ColumnNode multiplyTwoList(MyLinkedList<ColumnNode> first, MyLinkedList<ColumnNode> second, int index) {
+    static Node<ColumnNode> multiplyTwoList(MyLinkedList<ColumnNode> first, MyLinkedList<ColumnNode> second, int index) {
         Node<ColumnNode> columnNodeNode1 = first.getNode(0);
         Node<ColumnNode> columnNodeNode2 = second.getNode(0);
         Node<ColumnNode> resultNode = new Node<>();
@@ -75,7 +74,7 @@ public class MyMatrix {
         if (resultNode.getElement().getValue() > 0) {
             resultNode.setIndex(index);
         }
-        return resultNode.getElement();
+        return resultNode;
     }
 
     public RowNode getTheRowNodeOfTheIndexRow(int index) {
