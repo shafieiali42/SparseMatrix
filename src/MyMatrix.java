@@ -13,35 +13,38 @@ public class MyMatrix {
     }
 
 
-
-
     public static MyLinkedList<ColumnNode> multiplyMatrixToColumn(MyMatrix first, MyLinkedList<ColumnNode> second) {
         MyLinkedList<ColumnNode> result = new MyLinkedList<>();
+        MyLinkedList<RowNode> myLinkedList =new MyLinkedList<>();
         for (int i = 0; i < first.getRows().getSize(); i++) {
-            ColumnNode columnNode = multiplyTwoList(first.getTheRowNodeOfTheIndexRow(i).getColumns(), second, i);
+            myLinkedList.addElement(first.getTheRowNodeOfTheIndexRow(i));
+        }
+        Node<RowNode> rowNodeNode = myLinkedList.getNode(0);
+        for (int i = 0; i < first.getRows().getSize(); i++) {
+            ColumnNode columnNode = multiplyTwoList(rowNodeNode.getElement().getColumns(), second, i);
             columnNode.setColumnNumber(i);
             result.addElement(columnNode);
+            rowNodeNode=rowNodeNode.getNext();
         }
-
         return result;
     }
 
 
     public static MyLinkedList<ColumnNode> convertMatrixToList(MyMatrix matrix, MyLinkedList<Integer> indexes) {
         MyLinkedList<ColumnNode> result = new MyLinkedList<>();
-        Node<RowNode> rowNodeNode=matrix.getRows().getNode(0);
-        for (int i = 0; i < matrix.getNumberOfRows(); i++) {
+        Node<RowNode> rowNodeNode = matrix.getRows().getNode(0);
+        for (int i = 0; i < matrix.getRows().getSize(); i++) {
             double sum = 0d;
             boolean isAxis = true;
-            Node<Integer> node=indexes.getNode(0);
+            Node<Integer> node = indexes.getNode(0);
             for (int j = 0; j < indexes.getSize(); j++) {
                 sum += rowNodeNode.getElement().getTheColumnNodeOfTheIndexColumn(node.getElement()).getValue();
                 if (rowNodeNode.getElement().getTheColumnNodeOfTheIndexColumn(node.getElement()).getValue() == 0) {
                     isAxis = false;
                 }
-                node=node.getNext();
+                node = node.getNext();
             }
-            rowNodeNode=rowNodeNode.getNext();
+            rowNodeNode = rowNodeNode.getNext();
             if (!isAxis) { //maybe memory limit
                 sum = 0;
             }
@@ -76,13 +79,12 @@ public class MyMatrix {
     }
 
     public RowNode getTheRowNodeOfTheIndexRow(int index) {
-        Node<RowNode> node =rows.getNode(0);
+        Node<RowNode> node = rows.getNode(0);
         for (int i = 0; i < rows.getSize(); i++) {
             if (node.getElement().getRowNumber() == index) {
-                node=node.getNext();
                 return node.getElement();
             }
-            node=node.getNext();
+            node = node.getNext();
         }
         return null;//todo
     }
